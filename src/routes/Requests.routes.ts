@@ -1,9 +1,24 @@
-import { Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 const router = Router();
+import { checkSchema } from 'express-validator';
+import { validationResult } from 'express-validator';
 
-import RequestController from '../controllers/request.controller.js';
+import RequestController from '../controllers/request.controller';
+import createRequireSchema from '../helpers/validation';
 
-router.post('', RequestController.createRequest);
+router.post(
+  '',
+  checkSchema(createRequireSchema),
+  (req: Request, res: Response, next: NextFunction): void => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).json({ errors: errors.array() });
+      return;
+    }
+    next();
+  },
+  RequestController.createRequest,
+);
 
 router.get('', RequestController.getRequests);
 

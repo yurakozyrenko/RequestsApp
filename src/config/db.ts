@@ -1,6 +1,6 @@
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { DataSource } from 'typeorm';
-import { RequestEntity } from '../entities/RequestEntity.js';
+import { RequestEntity } from '../entities/request.entity';
 import 'dotenv/config';
 
 const AppDataSource = new DataSource({

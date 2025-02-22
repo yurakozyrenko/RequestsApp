@@ -7,7 +7,7 @@ export enum RequestStatus {
   CANCELED = 'canceled',
 }
 
-@Entity('requests')
+@Entity({ name: 'requests' })
 export class RequestEntity {
   @PrimaryGeneratedColumn()
   id: number = 0;
@@ -27,9 +27,9 @@ export class RequestEntity {
   @Column({ nullable: true })
   cancelReason?: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp without time zone' })
   createdAt: Date = new Date();
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp without time zone' })
   updatedAt: Date = new Date();
 }

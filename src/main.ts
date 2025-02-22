@@ -1,22 +1,23 @@
 import 'reflect-metadata';
 import express from 'express';
-import { RequestEntity, RequestStatus } from './entities/RequestEntity.js';
 import 'dotenv/config';
-import AppDataSource from './config/db.js';
+import AppDataSource from './config/db';
 import cors from 'cors';
-import router from './routes/index.js';
+import router from './routes/index';
+import errorHandler from './middleware/ErrorHandlingMiddleware';
 
 const app = express();
-app.use(cors());
-
 const HTTP_PORT: number = Number(process.env.HTTP_PORT) || 3000;
+app.use(cors());
 
 app.use(express.json());
 
 app.use('/', router);
 
-AppDataSource.initialize().then(async () => {
-  console.log('Database connected');
+app.use(errorHandler);
 
-  app.listen(HTTP_PORT, () => console.log(`Server running on port ${HTTP_PORT}`));
+AppDataSource.initialize().then(async () => {
+  app.listen(HTTP_PORT);
 });
+
+export default app;

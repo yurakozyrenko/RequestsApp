@@ -1,85 +1,77 @@
-import { Request, Response } from 'express';
-import requestService from '../services/request.service.js';
+import { NextFunction, Request, Response } from 'express';
+import requestService from '../services/request.service';
 
 class RequestController {
   // 1) Создать обращение
-  async createRequest(req: Request, res: Response) {
+  async createRequest(req: Request, res: Response, next: NextFunction) {
     try {
       const { topic, text }: { topic: string; text: string } = req.body;
-      const response = await requestService.create(topic, text);
-      res.status(201).json(response);
+      await requestService.create(topic, text);
+      res.status(201).json({ response: 'Обращение создано' });
     } catch (error) {
-      res.status(500).json({ error: 'Internal server error' });
+      next(error);
     }
   }
 
   //   2) Взять обращение в работу
-  async takeRequest(req: Request, res: Response) {
+  async takeRequest(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const response = await requestService.takeRequest(Number(id));
-      res.json(response);
+      await requestService.takeRequest(Number(id));
+      res.status(200).json({ response: 'Обращение принято в работу' });
     } catch (error) {
-      res.status(500).json({ error: 'Internal server error' });
+      next(error);
     }
   }
 
   //   3) Завершить обработку обращения
-  async completeRequest(req: Request, res: Response) {
+  async completeRequest(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
       const { resolution } = req.body;
-      const response = await requestService.completeRequest(
-        Number(id),
-        resolution
-      );
-      res.json(response);
+      await requestService.completeRequest(Number(id), resolution);
+      res.status(200).json({ response: 'Обработка обращения завершена' });
     } catch (error) {
-      res.status(500).json({ error: 'Internal server error' });
+      next(error);
     }
   }
 
   // 4) Отмена обращения
-  async cancelRequest(req: Request, res: Response) {
+  async cancelRequest(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { reason } = req.body;
-      const response = await requestService.cancelRequest(Number(id), reason);
-      res.json(response);
+      const { cancelReason } = req.body;
+      await requestService.cancelRequest(Number(id), cancelReason);
+      res.status(200).json({ response: 'Обращение отменено' });
     } catch (error) {
-      res.status(500).json({ error: 'Internal server error' });
+      next(error);
     }
   }
 
   // 5) Получить список обращений
-  async getRequests(req: Request, res: Response) {
+  async getRequests(req: Request, res: Response, next: NextFunction) {
     try {
-      const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 10;
 
-      const firstDayOfMonth = new Date(new Date().setDate(1))
-        .toISOString()
-        .split('T')[0];
+      const date = req.query.date as string | undefined;
+      const startDate = req.query.startDate as string | undefined;
+      const endDate = req.query.endDate as string | undefined;
 
-      const {
-        date = today,
-        from = firstDayOfMonth,
-        to = today,
-      } = req.query as { date?: string; from?: string; to?: string };
-
-      const response = await requestService.getRequests(date, from, to);
-      res.json(response);
+      const response = await requestService.getAllRequests(page, limit, date, startDate, endDate);
+      res.status(200).json(response);
     } catch (error) {
-      res.status(500).json({ error: 'Internal server error' });
+      next(error);
     }
   }
 
   // 6) отменит все обращения, которые находятся в статусе "в работе"
-  async cancelAllRequestInProgres(req: Request, res: Response) {
+  async cancelAllRequestInProgres(req: Request, res: Response, next: NextFunction) {
     try {
       const response = await requestService.cancelAllRequestInProgres();
-      res.json(response);
+      res.status(200).json({ response: `${response} обращ. в статусе в работе отменено ` });
     } catch (error) {
-      res.status(500).json({ error: 'Internal server error' });
+      next(error);
     }
   }
 }
