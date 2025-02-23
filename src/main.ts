@@ -20,7 +20,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(errorHandler);
 
 AppDataSource.initialize().then(async () => {
-  app.listen(HTTP_PORT, () => console.log(`🚀 Server started on port ${HTTP_PORT}`));
+  app.listen(HTTP_PORT);
 });
 
 export default app;
