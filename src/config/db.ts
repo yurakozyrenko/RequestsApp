@@ -13,7 +13,7 @@ const AppDataSource = new DataSource({
   synchronize: true,
   entities: [RequestEntity],
   namingStrategy: new SnakeNamingStrategy(),
-  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
+  // ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
 });
 
 export default AppDataSource;
