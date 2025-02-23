@@ -12,7 +12,7 @@ class RequestService {
 
     const request = await requestRepository.findRequestById(id);
     if (!request) {
-      throw ApiError.notFound(`Request with ID ${id} not found`);
+      throw ApiError.badRequest(`Обращение с ID ${id} не найдено`);
     }
     this.logger.debug(`request successfully get by id: ${id}`);
 
@@ -37,7 +37,7 @@ class RequestService {
     const request = await this.getRequestById(id);
 
     if (request.status !== RequestStatus.NEW) {
-      throw ApiError.notFound(`Request with ID ${id} not status NEW`);
+      throw ApiError.notFound(`Обращение с ID ${id} not status NEW`);
     }
 
     request.status = RequestStatus.IN_PROGRESS;
@@ -54,7 +54,7 @@ class RequestService {
     const request = await this.getRequestById(id);
 
     if (request.status !== RequestStatus.IN_PROGRESS) {
-      throw ApiError.notFound(`Request with ID ${id} not status IN_PROGRESS`);
+      throw ApiError.notFound(`Обращение с ID ${id} not status IN_PROGRESS`);
     }
 
     request.status = RequestStatus.COMPLETED;
@@ -72,7 +72,7 @@ class RequestService {
     const request = await this.getRequestById(id);
 
     if (request.status === RequestStatus.COMPLETED || request.status === RequestStatus.CANCELED) {
-      throw ApiError.notFound(`Request with ID ${id} already status COMPLETED or CANCELED`);
+      throw ApiError.notFound(`Обращение с ID ${id} already status COMPLETED or CANCELED`);
     }
 
     request.status = RequestStatus.CANCELED;
@@ -84,13 +84,7 @@ class RequestService {
   }
 
   // 5) Получить список обращений с фильтрацией по дате
-  async getAllRequests(
-    page: number,
-    limit: number,
-    date?: string,
-    startDate?: string,
-    endDate?: string,
-  ): Promise<RequestEntity[]> {
+  async getAllRequests(page: number, limit: number, date?: string, startDate?: string, endDate?: string): Promise<RequestEntity[]> {
     this.logger.log(`Trying to get list requests`);
 
     const offset = (page - 1) * limit;

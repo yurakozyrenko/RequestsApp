@@ -14,12 +14,7 @@ class RequestRepository {
   }
 
   async createRequest(createRequest: CreateRequestDto): Promise<InsertResult> {
-    return await requestRepo
-      .createQueryBuilder('requests')
-      .insert()
-      .into(RequestEntity)
-      .values(createRequest)
-      .execute();
+    return await requestRepo.createQueryBuilder('requests').insert().into(RequestEntity).values(createRequest).execute();
   }
 
   async updateTakeRequestById(id: number, request: RequestDto): Promise<UpdateResult> {

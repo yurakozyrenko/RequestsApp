@@ -7,7 +7,7 @@ class RequestController {
     try {
       const { topic, text }: { topic: string; text: string } = req.body;
       await requestService.create(topic, text);
-      res.status(201).json({ response: 'Обращение создано' });
+      res.status(201).json({ response: 'Обращение успешно создано' });
     } catch (error) {
       next(error);
     }
@@ -69,7 +69,7 @@ class RequestController {
   async cancelAllRequestInProgres(req: Request, res: Response, next: NextFunction) {
     try {
       const response = await requestService.cancelAllRequestInProgres();
-      res.status(200).json({ response: `${response} обращ. в статусе в работе отменено ` });
+      res.status(200).json({ response: `${response} обращ. в статусе IN_PROGRESS отменено ` });
     } catch (error) {
       next(error);
     }
