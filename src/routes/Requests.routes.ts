@@ -20,7 +20,41 @@ router.post(
   RequestController.createRequest,
 );
 
-router.get('', RequestController.getRequests);
+/**
+ * @swagger
+ * /api/requests:
+ *  get:
+ *    summary: Получить все запросы
+ *    description: Возвращает список всех запросов
+ *    tags:
+ *      - Requests
+ *    responses:
+ *      200:
+ *        description: Успешный ответ
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                type: object
+ *                properties:
+ *                  id:
+ *                    type: integer
+ *                    example: 1
+ *                  topic:
+ *                    type: string
+ *                    example: "Пример темы"
+ *                  text:
+ *                    type: string
+ *                    example: "Пример текста"
+ *                  status:
+ *                    type: string
+ *                    example: "new"
+ */
+
+router.get('/', RequestController.getRequests);
+
+router.get('/', RequestController.getRequests);
 
 router.patch('/take/:id', RequestController.takeRequest);
 

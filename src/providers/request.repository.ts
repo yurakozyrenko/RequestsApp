@@ -9,7 +9,7 @@ import { InsertResult, UpdateResult } from 'typeorm/browser';
 const requestRepo = AppDataSource.getRepository(RequestEntity);
 
 class RequestRepository {
-  async findRequestById(id: number) {
+  async findRequestById(id: number): Promise<RequestEntity | null> {
     return await requestRepo.createQueryBuilder('requests').where('requests.id = :id', { id }).getOne();
   }
 
