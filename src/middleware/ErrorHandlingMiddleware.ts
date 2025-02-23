@@ -9,6 +9,8 @@ const errorHandler = (err: unknown, req: Request, res: Response, next: NextFunct
   } else {
     res.status(500).json({ message: 'Непредвиденная ошибка' });
   }
+
+  next(err);
 };
 
 export default errorHandler;

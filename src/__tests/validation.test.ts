@@ -1,11 +1,10 @@
 import { checkSchema, validationResult } from 'express-validator';
 import createRequireSchema from '../helpers/validation';
-import { jest } from '@jest/globals';
 
 const mockRequest = (body: Record<string, any>) =>
   ({
     body,
-  } as any);
+  }) as any;
 
 const mockResponse = () => {
   const res: any = {};

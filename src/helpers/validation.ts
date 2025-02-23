@@ -15,4 +15,4 @@ const createRequireSchema: Schema = {
   },
 };
 
-export default createRequireSchema
+export default createRequireSchema;
