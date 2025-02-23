@@ -94,34 +94,22 @@ router.post(
  *        content:
  *          application/json:
  *            schema:
- *              type: object
- *              properties:
- *                total:
- *                  type: integer
- *                  example: 100
- *                page:
- *                  type: integer
- *                  example: 1
- *                limit:
- *                  type: integer
- *                  example: 10
- *                data:
- *                  type: array
- *                  items:
- *                    type: object
- *                    properties:
- *                      id:
- *                        type: integer
- *                        example: 1
- *                      topic:
- *                        type: string
- *                        example: "Пример темы"
- *                      text:
- *                        type: string
- *                        example: "Пример текста"
- *                      status:
- *                        type: string
- *                        example: "new"
+ *              type: array
+ *              items:
+ *                type: object
+ *                properties:
+ *                  id:
+ *                    type: integer
+ *                    example: 1
+ *                  topic:
+ *                    type: string
+ *                    example: "Пример темы"
+ *                  text:
+ *                    type: string
+ *                    example: "Пример текста"
+ *                  status:
+ *                    type: string
+ *                    example: "new"
  *      500:
  *        description: 'Непредвиденная ошибка'
  */
